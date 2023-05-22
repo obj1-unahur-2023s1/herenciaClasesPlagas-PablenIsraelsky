@@ -1,3 +1,5 @@
+import plagas.*
+
 class Barrio {
 	const elementos = []
 	
@@ -5,7 +7,8 @@ class Barrio {
 		elementos.add(elemento)
 	}
 	
-	method agregarElementos(elementosVarios) {
+	//Para agregar varios elementos - elementosVarios es una colección
+	method agregarElementos(elementosVarios) { 
 		elementos.addAll(elementosVarios)
 	}
 	
@@ -29,6 +32,11 @@ class Hogar {
 	method esBueno() { // Método para saber si es bueno - Boolean
 		return nivelMugre <= (nivelConfort / 2)
 	}
+	
+	// Daño que recibiría de una plaga
+	method recibirDanio(plaga) {
+		nivelMugre = nivelMugre + plaga.nivelDanio()
+	}
 }
 
 class Huerta {
@@ -38,6 +46,15 @@ class Huerta {
 	method esBueno() { // Método para saber si es bueno - Boolean
 		return capacidadProduccion > nivelHuerta
 	}
+	
+	// Daño que recibiría de una plaga
+	method recibirDanio(plaga) {
+		if(plaga.transmiteEnfermedades()) {
+			capacidadProduccion -= ((plaga.nivelDanio() * 0.1) + 10)
+		} else {
+			capacidadProduccion -= (plaga.nivelDanio() * 0.1)
+		}
+	}
 }
 
 class Mascota {
@@ -45,5 +62,12 @@ class Mascota {
 	
 	method esBueno() { // Método para saber si es bueno - Boolean
 		return nivelSalud > 250
+	}
+	
+	// Daño que recibiría de una plaga
+	method recibirDanio(plaga) {
+		if (plaga.transmiteEnfermedades()) {
+			nivelSalud -= plaga.nivelDanio()
+		}
 	}
 }
